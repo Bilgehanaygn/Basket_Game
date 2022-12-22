@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9152499683132955491}
   - component: {fileID: 9152499683132955516}
-  - component: {fileID: 9152499683132955490}
+  - component: {fileID: 3547027480631916617}
   m_Layer: 0
   m_Name: ShootManager
   m_TagString: Untagged
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25eb44b239e3a84e88dbe971abb5346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!120 &9152499683132955490
+--- !u!120 &3547027480631916617
 LineRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,7 +65,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4a7488d8dbcc3be42952deb4a1ade420, type: 2}
+  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,8 +83,8 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1914176835
-  m_SortingLayer: 3
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions: []
   m_Parameters:
@@ -94,8 +94,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.01133728
-        value: 0.11764717
+        time: 0
+        value: 0.15999985
         inSlope: 0
         outSlope: 0
         tangentMode: 0
