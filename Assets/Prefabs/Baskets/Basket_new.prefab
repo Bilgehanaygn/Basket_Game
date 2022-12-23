@@ -249,6 +249,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3894853409862008202}
   - component: {fileID: 7039559032507087616}
+  - component: {fileID: 6509432391141655692}
+  - component: {fileID: 1152255447449903883}
+  - component: {fileID: 8455521981296567300}
   m_Layer: 0
   m_Name: Basket_new
   m_TagString: Untagged
@@ -300,3 +303,47 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
+--- !u!114 &6509432391141655692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7039559032507087617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49888060f73518d46be5ff5482589d88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!58 &1152255447449903883
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7039559032507087617}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -5.4, y: 5}
+  serializedVersion: 2
+  m_Radius: 0.3
+--- !u!58 &8455521981296567300
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7039559032507087617}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 5.4, y: 5}
+  serializedVersion: 2
+  m_Radius: 0.3

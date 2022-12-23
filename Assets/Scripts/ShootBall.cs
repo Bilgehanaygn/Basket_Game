@@ -7,7 +7,6 @@ public class ShootBall : MonoBehaviour
     RaycastHit2D _hit;
     bool clickedToBall = false;
     Camera _cam;
-    AudioSource _audioSource;
     Ball _ball;
     private Vector2 symmetricPoint;
     
@@ -17,7 +16,6 @@ public class ShootBall : MonoBehaviour
     public static ShootBall Instance {get; private set;}
 
     private void Awake() {
-        _audioSource = GetComponent<AudioSource>();
         _cam = Camera.main;
         _ball = FindObjectOfType<Ball>();
         _lineRenderer = GetComponent<LineRenderer>();
@@ -54,7 +52,7 @@ public class ShootBall : MonoBehaviour
         //in horizontal V0t
         //horizontal constituent -> cos(degree from the x axis)*V0
         //vertical constituent -> sin(degree from the x axis)*V0
-        float force = (symmetricPoint - ballCenter).magnitude*8;
+        float force = (symmetricPoint - ballCenter).magnitude*Ball.ballForce;
         Vector2 direction = (symmetricPoint-ballCenter).normalized;
         Vector2 velocity = direction * force;
         _lineRenderer.positionCount = maxIterations;
@@ -66,6 +64,7 @@ public class ShootBall : MonoBehaviour
         
     }
 
+    //Note: if the finger distance is too little, cancel the trajectory and shoot
     private void fingerDrag(){
         //if clicked on the ball and dragged
         if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began){
@@ -90,7 +89,6 @@ public class ShootBall : MonoBehaviour
             _lineRenderer.positionCount = 0;
             _ball.ShootTheBall(_hit.transform.position, symmetricPoint, _hit.rigidbody, false);
 
-            _audioSource.Play();
         }
 
         //render a line according to the position of the finger
