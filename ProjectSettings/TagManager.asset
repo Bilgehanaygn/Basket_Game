@@ -54,3 +54,6 @@ TagManager:
   - name: Basket_Front
     uniqueID: 1822845825
     locked: 0
+  - name: Confetti(Frontmost)
+    uniqueID: 2719242525
+    locked: 0
