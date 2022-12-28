@@ -14,14 +14,16 @@ public class Goal : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("its a goal");
+        _goalCollider.enabled = false;
         _goalConfetti.Play();
         StartCoroutine(onGoal());
         
     }
 
     private IEnumerator onGoal(){
+        Debug.Log("on goal is called");
         yield return new WaitForSecondsRealtime(_goalConfetti.main.startLifetime.constantMax);
         _gameManager.LevelComplete();
+        _goalCollider.enabled = true;
     }
 }

@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     private List<GameObject> _obstacles = new List<GameObject>();
 
     private int _activeLevel = 1;
-    private bool _canGoal = true;
 
 
     // a scene object consist of following fields, that can be ball, pillow, basket or obstacles
@@ -38,11 +37,21 @@ public class GameManager : MonoBehaviour
         public Quaternion objectRotation {get; private set;}
         public Vector2 objectScale {get; private set;}
 
+        public Vector2 wayChangerVelocity {get; private set;}
+
         public SceneObject(GameObject objectPrefab, Vector2 objectPosition, Quaternion objectRotation, Vector3 objectScale ){
             this.objectPrefab = objectPrefab;
             this.objectPosition = objectPosition;
             this.objectRotation = objectRotation;
             this.objectScale = objectScale;
+        }
+
+        public SceneObject(GameObject objectPrefab, Vector2 objectPosition, Quaternion objectRotation, Vector3 objectScale, Vector2 wayChangerVelocity){
+            this.objectPrefab = objectPrefab;
+            this.objectPosition = objectPosition;
+            this.objectRotation = objectRotation;
+            this.objectScale = objectScale;
+            this.wayChangerVelocity = wayChangerVelocity;
         }
     }
 
@@ -59,6 +68,7 @@ public class GameManager : MonoBehaviour
             this.basket = basket;
             this.obstacles = obstacles;
         }
+
 
         public IEnumerator GetEnumerator(){
             return obstacles.GetEnumerator();
@@ -117,11 +127,19 @@ public class GameManager : MonoBehaviour
 
         // instantiate all the obstacles (including an obstacle is not a must for a level so can be null)
 
-        if(level.obstacles==null)return;
+        if(level.obstacles==null) return;
 
         foreach(SceneObject obstacle in level){
+            
             GameObject instantiatedObstacle = Instantiate(obstacle.objectPrefab, obstacle.objectPosition, obstacle.objectRotation);
             instantiatedObstacle.transform.localScale = obstacle.objectScale;
+
+            //customize how fast does the way changer obstacle bounces
+            if(obstacle.wayChangerVelocity!=Vector2.zero){
+                instantiatedObstacle.GetComponent<WayChangerObstacle>().SetNewVelocity(obstacle.wayChangerVelocity);
+            }
+            
+
             _obstacles.Add(instantiatedObstacle);
 
             SceneManager.MoveGameObjectToScene(instantiatedObstacle, SceneManager.GetActiveScene());
@@ -153,10 +171,6 @@ public class GameManager : MonoBehaviour
     }
 
     public void LevelComplete(){
-        if(!_canGoal){
-            return;
-        }
-        _canGoal = false;
         this._activeLevel++;
         this.DestroyCurrentLevel();
         this.InitializeLevel(_activeLevel);
@@ -175,26 +189,43 @@ public class GameManager : MonoBehaviour
 
     private void CreateLevels(){
         Level level1 = new Level(
-            new SceneObject(this._ballPrefab, new Vector2(7.913f, -0.731f), Quaternion.Euler(0f,0f,0f), new Vector3(0.2f, 0.2f, 1f)),
+            new SceneObject(this._ballPrefab, new Vector2(7.913f, -0.731f), Quaternion.Euler(0f,0f,0f), new Vector3(0.025f, 0.025f, 1f)),
             new SceneObject(this._pillowPrefab, new Vector2(7.93f, -1.33f), Quaternion.Euler(0f, 0f, 5.38f), new Vector3(0.3f, 0.3f, 1f)),
             new SceneObject(this._basketPrefab, new Vector2(-0.03f, -1.33f), Quaternion.Euler(0f, 0f, -60f), new Vector3(0.2f, 0.2f, 1f)),
             null
         );
 
         Level level2 = new Level(
-            new SceneObject(this._ballPrefab, new Vector2(7.913f, -0.731f), Quaternion.Euler(0f,0f,0f), new Vector3(0.2f, 0.2f, 1f)),
+            new SceneObject(this._ballPrefab, new Vector2(7.913f, -0.731f), Quaternion.Euler(0f,0f,0f), new Vector3(0.025f, 0.025f, 1f)),
             new SceneObject(this._pillowPrefab, new Vector2(7.93f, -1.33f), Quaternion.Euler(0f, 0f, 5.38f), new Vector3(0.3f, 0.3f, 1f)),
             new SceneObject(this._basketPrefab, new Vector2(-9.03f, -1.33f), Quaternion.Euler(0f, 0f, -60f), new Vector3(0.2f, 0.2f, 1f)),
             new SceneObject[]{
                 new SceneObject(this._obstacleDefault, new Vector2(-0.9f, -1.27f), Quaternion.Euler(0f, 0f, 39.4f), new Vector3(0.7f, 0.7f, 1f)),
-                new SceneObject(this._obstacleWayChanger, new Vector2(-0.72f, 4.97f), Quaternion.Euler(0f, 0f, 0f), new Vector3(0.7f, 0.7f, 1f)),
+                new SceneObject(this._obstacleWayChanger, new Vector2(-0.72f, 4.97f), Quaternion.Euler(0f, 0f, 0f), new Vector3(0.7f, 0.7f, 1f), new Vector2(0f, -7f)),
                 new SceneObject(this._obstacleKiller, new Vector2(1.52f, -0.2f), Quaternion.Euler(0f, 0f, 0f), new Vector3(0.25f, 0.25f, 1f)),
-                new SceneObject(this._obstacleKiller, new Vector2(1.52f, 1.49f), Quaternion.Euler(0f, 0f, 0f), new Vector3(0.25f, 0.25f, 1f))
+                new SceneObject(this._obstacleKiller, new Vector2(1.52f, 1.49f), Quaternion.Euler(0f, 0f, 0f), new Vector3(0.25f, 0.25f, 1f)),
+                new SceneObject(this._obstacleKiller, new Vector2(-3.25f, 3.18f), Quaternion.Euler(0f, 0f, 0f), new Vector3(0.25f, 0.25f, 1f)),
+                new SceneObject(this._obstacleKiller, new Vector2(-3.25f, 1.49f), Quaternion.Euler(0f, 0f, 0f), new Vector3(0.25f, 0.25f, 1f))
+            }
+        );
+
+        Level level3 = new Level(
+            new SceneObject(this._ballPrefab, new Vector2(5.033f, -2.129f), Quaternion.Euler(0f,0f,0f), new Vector3(0.025f, 0.025f, 1f)),
+            new SceneObject(this._pillowPrefab, new Vector2(5.07f, -2.79f), Quaternion.Euler(0f, 0f, 5.38f), new Vector3(0.3f, 0.3f, 1f)),
+            new SceneObject(this._basketPrefab, new Vector2(-9.03f, 1.26f), Quaternion.Euler(0f, 0f, -145f), new Vector3(0.2f, 0.2f, 1f)),
+            new SceneObject[]{
+                new SceneObject(this._obstacleWayChanger, new Vector2(0.3f, 3.46f), Quaternion.Euler(Vector3.zero), new Vector3(0.7f, 0.7f, 1f), new Vector2(0f, -10f)),
+                new SceneObject(this._obstacleWayChanger, new Vector2(-3.12f, 3.46f), Quaternion.Euler(Vector3.zero), new Vector3(0.7f, 0.7f, 1f), new Vector2(0f, -10f)),
+                new SceneObject(this._obstacleWayChanger, new Vector2(-6.54f, 3.46f), Quaternion.Euler(Vector3.zero), new Vector3(0.7f, 0.7f, 1f), new Vector2(0f, -10f)),
+                new SceneObject(this._obstacleDefault, new Vector2(0.59f, -0.79f), Quaternion.Euler(0f, 0f, 25f), new Vector3(0.83f, 1f, 1f)),
+                new SceneObject(this._obstacleDefault, new Vector2(-2.83f, -0.79f), Quaternion.Euler(0f, 0f, 25f), new Vector3(0.83f, 1f, 1f)),
+                new SceneObject(this._obstacleDefault, new Vector2(-6.25f, -0.79f), Quaternion.Euler(0f, 0f, 25f), new Vector3(0.83f, 1f, 1f))
             }
         );
 
         this.levelDictionary.Add(1, level1);
         this.levelDictionary.Add(2, level2);
+        this.levelDictionary.Add(3, level3);
     }
 
 }
